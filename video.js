@@ -35,9 +35,9 @@ const drawFromVideo = (ctx, video) => {
     const channel_size = 224 * 224;
     const rgb = new Float32Array(channel_size * 3);
     for (let j = 0; j < (imageData.data.length / 4); j++) {
-        rgb[channel_size * 0 + j] = imageData.data[j * 4 + 0]
-        rgb[channel_size * 1 * j] = imageData.data[j * 4 + 1]
-        rgb[channel_size * 2 * j] = imageData.data[j * 4 + 2]
+        rgb[channel_size * 0 + j] = imageData.data[j * 4 + 0] / 255.0;
+        rgb[channel_size * 1 + j] = imageData.data[j * 4 + 1] / 255.0;
+        rgb[channel_size * 2 + j] = imageData.data[j * 4 + 2] / 255.0;
     }
     console.log(rgb);
     return rgb;

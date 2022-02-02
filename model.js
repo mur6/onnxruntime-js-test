@@ -16,23 +16,22 @@ const from_3dim_to_tensor = (arr, shape) => {
     return to_tensor(f32_arr, shape);
 }
 
-const load_input_data = () => {
+const load_input_data = (batch_imgs) => {
     const joints = data["template_3d_joints"];
-    //const betas = from_3dim_to_tensor(d, [1, 21, 3]);
     const vertices = data["template_vertices_sub"];
     const ret = {
         template_3d_joints :from_3dim_to_tensor(joints, [1, 21, 3]),
         template_vertices_sub:from_3dim_to_tensor(vertices, [1, 195, 3]),
+        batch_imgs: batch_imgs
     };
     console.log(ret);
     return ret;
 }
 
 // use an async context to call onnxruntime functions.
-async function initModel(input_data) {
+async function run(input_data) {
     try {
-        const session = await ort.InferenceSession.create('./gm2.onnx');
-        const input_data = load_input_data();
+        const session = await ort.InferenceSession.create('./gm3.onnx');
         const results = await session.run(input_data);
         //console.log(results);
         const pred_camera = results.pred_camera;
@@ -51,7 +50,8 @@ async function initModel(input_data) {
         // make_render(v_data, faces.data);
     } catch (e) {
         document.write(`failed to inference ONNX model: ${e}.`);
+        console.log(e);
     }
 }
 
-export { to_tensor, load_input_data, initModel };
+export { to_tensor, load_input_data, run };
