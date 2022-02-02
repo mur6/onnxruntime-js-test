@@ -1,6 +1,6 @@
 //import {initModel} from './model.js';
 
-function draw() {
+function resize() {
     // fill vertically
     var vratio = (c.height / v.videoHeight) * v.videoWidth;
     ctx.drawImage(v, 0, 0, vratio, c.height);
@@ -10,11 +10,6 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-//     function updateCanvas() {
-//     context.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
-//     window.requestAnimationFrame(updateCanvas);
-//   }
-//   requestAnimationFrame(updateCanvas);
 async function getMediaAndSetStream(video) {
     const constraints = { audio: false, video: { width: 1280, height: 720 } }
     //let stream = null;
@@ -26,16 +21,16 @@ async function getMediaAndSetStream(video) {
     }
 }
 
-const CANVAS_SIZE = {width: 450, height: 450};
+const CANVAS_SIZE = {width: 224, height: 224};
 
 const drawFromVideo = (ctx, video) => {
-    const width = CANVAS_SIZE.width;
-    const height = CANVAS_SIZE.height;
+    const width = 450;//CANVAS_SIZE.width;
+    const height = 450;//CANVAS_SIZE.height;
     const marginX = Math.floor((1280 - width) / 2);
     const marginY = Math.floor((720 - height) / 2);
     //console.log(marginX, marginY);
 
-    ctx.drawImage(video, marginX, marginY, width, height, 0, 0, width, height);
+    ctx.drawImage(video, marginX, marginY, width, height, 0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
 }
 
 async function main() {
