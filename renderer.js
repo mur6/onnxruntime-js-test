@@ -2,13 +2,17 @@
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-import faces from './faces.json';
+import faces_data from './faces.json';
+
+const get_faces = () => {
+    return Uint16Array.from(faces_data.flat());
+}
 
 const make_geometry_and_mesh = () => {
     const geometry = new THREE.BufferGeometry();
 
     //const uint16faces = Uint16Array.from(faces_data);
-    //geometry.setIndex(new THREE.BufferAttribute(uint16faces, 1));
+    //
     const material = new THREE.MeshBasicMaterial( { color: 0x3366cc } );
     const mesh = new THREE.Mesh(geometry, material);
     return [geometry, mesh];
@@ -41,4 +45,4 @@ const initScene = (element) => {
     return scene;
 }
 
-export { make_geometry_and_mesh, initScene };
+export { get_faces, make_geometry_and_mesh, initScene };

@@ -10,11 +10,14 @@ function main() {
     const btn2 = document.getElementById('predict-hand');
     const scene = renderer.initScene(document.getElementById("threejs"));
     const [geometry, mesh] = renderer.make_geometry_and_mesh();
-    scene.add(mesh);
+    const uint16faces = renderer.get_faces();
+
     const update = (pred_vertices) => {
         const v = pred_vertices.data;
         geometry.setAttribute('position', new THREE.BufferAttribute(v, 3));
+        geometry.setIndex(new THREE.BufferAttribute(uint16faces, 1));
         geometry.attributes.position.needsUpdate = true;
+        scene.add(mesh);
     }
     btn.addEventListener('click', function () {
         (async () => {
