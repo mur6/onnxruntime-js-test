@@ -25,11 +25,15 @@ async function getMediaAndSetStream(video) {
         document.write(`failed to use getUserMedia: ${err}.`);
     }
 }
-
+const drawCanvas = (canvas, ctx, video, width, height) => {
+    if (canvas.width > 0 && canvas.height > 0) {
+        ctx.drawImage(video, 0, 0, width, height, 0, 0, 300, 300);
+    }
+}
 async function main() {
     const canvas = document.createElement('canvas');
-    canvas.width = 200;
-    canvas.height = 200;
+    canvas.width = 300;
+    canvas.height = 300;
 
     var ctx = canvas.getContext('2d');
 
@@ -39,14 +43,24 @@ async function main() {
     const video = document.createElement('video');
     video.autoplay = true;
     getMediaAndSetStream(video);
+    const container = document.getElementById("container");
+    console.log(container);
+    container.appendChild(document.createTextNode('fill vertical\n'));
+    container.appendChild(canvas);
 
-    document.body.appendChild(document.createTextNode('fill vertical\n'));
-    document.body.appendChild(canvas);
+    
 
-    document.body.appendChild(document.createTextNode('original video'));
-    document.body.appendChild(video);
+    container.appendChild(document.createTextNode('original video'));
+    container.appendChild(video);
 
-
+    const btn = document.getElementById('copy-to-video');
+    btn.addEventListener('click', function() {
+        drawCanvas(canvas, ctx, video, 300, 300);
+    }, false);
 }
 
-main()
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    main();
+})
