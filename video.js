@@ -32,21 +32,21 @@ const drawFromVideo = (ctx, video) => {
     const imageData = ctx.getImageData(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
     console.log(imageData);
     //const rgb = Array.from({length: 10}, (_, _) => {3});
-    const rgb = [new Float32Array(224 * 224), new Float32Array(224 * 224), new Float32Array(224 * 224)];
-    for (j = 0; j < (imageData.data.length / 4); j++) {
-        rgb[0][j] = imgData.data[j * 4 + 0]
-        rgb[1][j] = imgData.data[j * 4 + 1]
-        rgb[2][j] = imgData.data[j * 4 + 2]
+    const channel_size = 224 * 224;
+    const rgb = new Float32Array(channel_size * 3);
+    for (let j = 0; j < (imageData.data.length / 4); j++) {
+        rgb[channel_size * 0 + j] = imageData.data[j * 4 + 0]
+        rgb[channel_size * 1 * j] = imageData.data[j * 4 + 1]
+        rgb[channel_size * 2 * j] = imageData.data[j * 4 + 2]
     }
-
+    console.log(rgb);
+    return rgb;
 }
 
-export function initVideo() {
+function initAll() {
     const canvas = document.createElement('canvas');
     canvas.width = CANVAS_SIZE.width;
     canvas.height = CANVAS_SIZE.height;
-
-    const ctx = canvas.getContext('2d');
 
     const video = document.createElement('video');
     video.autoplay = true;
@@ -59,10 +59,7 @@ export function initVideo() {
     container.appendChild(document.createTextNode('original video'));
     container.appendChild(video);
 
-    const btn = document.getElementById('copy-to-video');
-    btn.addEventListener('click', function () {
-        if (canvas.width > 0 && canvas.height > 0) {
-            drawFromVideo(ctx, video, 300, 300);
-        }
-    }, false);
+    return [canvas, video];
 }
+
+export { drawFromVideo, initAll };
