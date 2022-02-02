@@ -38,16 +38,11 @@ async function run(input_data) {
         const pred_vertices = results.pred_vertices;
         console.log(pred_camera);
         console.log(pred_vertices);
-        //pred_camera, pred_3d_joints, pred_vertices_sub, pred_vertices
-        document.write(`pred_camera[dims]: ${pred_camera.dims}<br>`);
-        document.write(`pred_camera[size]: ${pred_camera.size}<br>`);
-        document.write(`pred_vertices[dims]: ${pred_vertices.dims}<br>`);
-        document.write(`pred_vertices[size]: ${pred_vertices.size}<br>`);
-        // //console.log(vertices);
-        // const num = 778*3;
-        // console.log(num);
-        // const v_data = vertices.data.slice(0, num);
-        // make_render(v_data, faces.data);
+        // document.write(`pred_camera[dims]: ${pred_camera.dims}<br>`);
+        // document.write(`pred_camera[size]: ${pred_camera.size}<br>`);
+        // document.write(`pred_vertices[dims]: ${pred_vertices.dims}<br>`);
+        // document.write(`pred_vertices[size]: ${pred_vertices.size}<br>`);
+        return [pred_camera, pred_vertices];
     } catch (e) {
         document.write(`failed to inference ONNX model: ${e}.`);
         console.log(e);
