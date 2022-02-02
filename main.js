@@ -16,7 +16,7 @@ function draw() {
 //   }
 //   requestAnimationFrame(updateCanvas);
 async function getMediaAndSetStream(video) {
-    const constraints = { audio: false, video: true }
+    const constraints = { audio: false, video: { width: 1280, height: 720 } }
     //let stream = null;
     try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -25,15 +25,24 @@ async function getMediaAndSetStream(video) {
         document.write(`failed to use getUserMedia: ${err}.`);
     }
 }
-const drawCanvas = (canvas, ctx, video, width, height) => {
-    if (canvas.width > 0 && canvas.height > 0) {
-        ctx.drawImage(video, 0, 0, width, height, 0, 0, 300, 300);
-    }
+
+const WIDTH = 450;
+const HEIGHT = 450;
+
+
+const drawFromVideo = (ctx, video) => {
+    const width = WIDTH;
+    const height = HEIGHT;
+    const marginX = Math.floor((1280 - width) / 2);
+    const marginY = Math.floor((720 - height) / 2);
+    console.log(marginX, marginY);
+
+    ctx.drawImage(video, marginX, marginY, width, height, 0, 0, WIDTH, HEIGHT);
 }
 async function main() {
     const canvas = document.createElement('canvas');
-    canvas.width = 300;
-    canvas.height = 300;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
 
     var ctx = canvas.getContext('2d');
 
@@ -48,14 +57,14 @@ async function main() {
     container.appendChild(document.createTextNode('fill vertical\n'));
     container.appendChild(canvas);
 
-    
-
     container.appendChild(document.createTextNode('original video'));
     container.appendChild(video);
 
     const btn = document.getElementById('copy-to-video');
-    btn.addEventListener('click', function() {
-        drawCanvas(canvas, ctx, video, 300, 300);
+    btn.addEventListener('click', function () {
+        if (canvas.width > 0 && canvas.height > 0) {
+            drawFromVideo(ctx, video, 300, 300);
+        }
     }, false);
 }
 
