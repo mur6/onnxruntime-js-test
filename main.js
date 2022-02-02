@@ -1,5 +1,4 @@
-
-const ort = require('onnxruntime-web');
+import * as ort from 'onnxruntime-web';
 
 import data from './template_params.json';
 import imagedata from './batch_imgs.json';
