@@ -36,12 +36,8 @@ async function run(input_data) {
         //console.log(results);
         const pred_camera = results.pred_camera;
         const pred_vertices = results.pred_vertices;
-        console.log(pred_camera);
-        console.log(pred_vertices);
-        // document.write(`pred_camera[dims]: ${pred_camera.dims}<br>`);
-        // document.write(`pred_camera[size]: ${pred_camera.size}<br>`);
-        // document.write(`pred_vertices[dims]: ${pred_vertices.dims}<br>`);
-        // document.write(`pred_vertices[size]: ${pred_vertices.size}<br>`);
+        //console.log(pred_camera);
+        //console.log(pred_vertices);
         return [pred_camera, pred_vertices];
     } catch (e) {
         document.write(`failed to inference ONNX model: ${e}.`);

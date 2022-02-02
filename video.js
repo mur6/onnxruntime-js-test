@@ -50,10 +50,11 @@ function initAll() {
 
     const video = document.createElement('video');
     video.autoplay = true;
+    //video.style.visibility ="hidden";
     getMediaAndSetStream(video);
     const container = document.getElementById("container");
     //console.log(container);
-    container.appendChild(document.createTextNode('fill vertical\n'));
+    container.appendChild(document.createTextNode('canvas:\n'));
     container.appendChild(canvas);
 
     container.appendChild(document.createTextNode('original video'));

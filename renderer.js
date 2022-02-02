@@ -20,7 +20,7 @@ const make_geometry_and_mesh = () => {
 
 const initScene = (element) => {
     const scene = new THREE.Scene();
-    const renderSize = 700;
+    const renderSize = 500;
     //const camera = new THREE.PerspectiveCamera(70, 1, 0.01, 10);
     //camera.position.z = 1;
     //const camera = new THREE.PerspectiveCamera(45, 1, 1, 10000);
