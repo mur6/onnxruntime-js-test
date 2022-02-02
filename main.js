@@ -26,23 +26,22 @@ async function getMediaAndSetStream(video) {
     }
 }
 
-const WIDTH = 450;
-const HEIGHT = 450;
-
+const CANVAS_SIZE = {width: 450, height: 450};
 
 const drawFromVideo = (ctx, video) => {
-    const width = WIDTH;
-    const height = HEIGHT;
+    const width = CANVAS_SIZE.width;
+    const height = CANVAS_SIZE.height;
     const marginX = Math.floor((1280 - width) / 2);
     const marginY = Math.floor((720 - height) / 2);
-    console.log(marginX, marginY);
+    //console.log(marginX, marginY);
 
-    ctx.drawImage(video, marginX, marginY, width, height, 0, 0, WIDTH, HEIGHT);
+    ctx.drawImage(video, marginX, marginY, width, height, 0, 0, width, height);
 }
+
 async function main() {
     const canvas = document.createElement('canvas');
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
+    canvas.width = CANVAS_SIZE.width;
+    canvas.height = CANVAS_SIZE.height;
 
     var ctx = canvas.getContext('2d');
 
