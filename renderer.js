@@ -13,13 +13,14 @@ const make_geometry_and_mesh = () => {
 
     //const uint16faces = Uint16Array.from(faces_data);
     //
-    const material = new THREE.MeshBasicMaterial( { color: 0x3366cc } );
+    const material = new THREE.MeshBasicMaterial( { color: 0x3366cc, wireframe : true} );
     const mesh = new THREE.Mesh(geometry, material);
     return [geometry, mesh];
 }
 
 const initScene = (element) => {
     const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0xffffff, 0.015, 100);
     const renderSize = 500;
     //const camera = new THREE.PerspectiveCamera(70, 1, 0.01, 10);
     //camera.position.z = 1;

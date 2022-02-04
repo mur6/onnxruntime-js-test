@@ -3,11 +3,11 @@ import * as model from './model.js';
 import * as renderer from './renderer.js';
 import * as THREE from 'three';
 
-function main() {
+async function main() {
     const [canvas, video] = initAll();
     const ctx = canvas.getContext('2d');
-    const btn = document.getElementById('copy-to-video');
-    const btn2 = document.getElementById('predict-hand');
+    const copy_to_video_button = document.getElementById('copy-to-video');
+    const predict_hand_button = document.getElementById('predict-hand');
     const scene = renderer.initScene(document.getElementById("threejs"));
     const [geometry, mesh] = renderer.make_geometry_and_mesh();
     const uint16faces = renderer.get_faces();
@@ -19,17 +19,23 @@ function main() {
         geometry.attributes.position.needsUpdate = true;
         scene.add(mesh);
     }
-    btn.addEventListener('click', function () {
+    let batch_imgs = null;
+    const session = await model.get_session();
+    console.log(`session loaded: ${session}`);
+    copy_to_video_button.addEventListener('click', function () {
         (async () => {
             if (canvas.width > 0 && canvas.height > 0) {
                 const f32arr = drawFromVideo(ctx, video, 300, 300);
-                const batch_imgs = model.to_tensor(f32arr, [3, 224, 224]);
-                console.log(batch_imgs);
-                const input = model.load_input_data(batch_imgs);
-                const [pred_camera, pred_vertices] = await model.run(input);
-
-                update(pred_vertices);
+                batch_imgs = model.to_tensor(f32arr, [3, 224, 224]);
+                console.log(`copy_to_video: converted batch_imgs: ${batch_imgs}`);
             }
+        })();
+    }, false);
+    predict_hand_button.addEventListener('click', function () {
+        (async () => {
+                const input = model.load_input_data(batch_imgs);
+                const [pred_camera, pred_vertices] = await model.run(session, input);
+                update(pred_vertices);
         })();
     }, false);
 }

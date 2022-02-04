@@ -28,12 +28,14 @@ const load_input_data = (batch_imgs) => {
     return ret;
 }
 
+async function get_session() {
+    return ort.InferenceSession.create('./gm3.onnx');
+}
+
 // use an async context to call onnxruntime functions.
-async function run(input_data) {
+async function run(session, input_data) {
     try {
-        const session = await ort.InferenceSession.create('./gm3.onnx');
         const results = await session.run(input_data);
-        //console.log(results);
         const pred_camera = results.pred_camera;
         const pred_vertices = results.pred_vertices;
         //console.log(pred_camera);
@@ -45,4 +47,4 @@ async function run(input_data) {
     }
 }
 
-export { to_tensor, load_input_data, run };
+export { to_tensor, load_input_data, get_session, run };
