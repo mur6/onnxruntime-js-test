@@ -8,7 +8,7 @@ async function main() {
     const ctx = canvas.getContext('2d');
     const copy_to_video_button = document.getElementById('copy-to-video');
     const predict_hand_button = document.getElementById('predict-hand');
-    const scene = renderer.initScene(document.getElementById("threejs"));
+    const [scene, camera] = renderer.initScene(document.getElementById("threejs"));
     const [geometry, mesh] = renderer.make_geometry_and_mesh();
     const uint16faces = renderer.get_faces();
 
@@ -18,6 +18,7 @@ async function main() {
         geometry.setIndex(new THREE.BufferAttribute(uint16faces, 1));
         geometry.attributes.position.needsUpdate = true;
         scene.add(mesh);
+        console.log(camera.position);
     }
     let batch_imgs = null;
     const session = await model.get_session();

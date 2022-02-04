@@ -25,10 +25,10 @@ const initScene = (element) => {
     //const camera = new THREE.PerspectiveCamera(70, 1, 0.01, 10);
     //camera.position.z = 1;
     //const camera = new THREE.PerspectiveCamera(45, 1, 1, 10000);
-    // カメラの初期座標を設定
-    //camera.position.set(0, 0, 1000);
+    //
     const camera = new THREE.PerspectiveCamera(70, 1, 0.01, 100);
-    camera.position.z = 3;
+    // カメラの初期座標を設定
+    camera.position.set(0.021, -0.116, -0.458);
 
     const controls = new OrbitControls(camera, element);
 
@@ -43,7 +43,7 @@ const initScene = (element) => {
         renderer.render(scene, camera);
         requestAnimationFrame(tick);
     }
-    return scene;
+    return [scene, camera];
 }
 
 export { get_faces, make_geometry_and_mesh, initScene };

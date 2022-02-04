@@ -30,7 +30,7 @@ const drawFromVideo = (ctx, video) => {
 
     ctx.drawImage(video, marginX, marginY, width, height, 0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
     const imageData = ctx.getImageData(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
-    console.log(imageData);
+    //console.log(imageData);
     //const rgb = Array.from({length: 10}, (_, _) => {3});
     const channel_size = 224 * 224;
     const rgb = new Float32Array(channel_size * 3);
@@ -39,7 +39,7 @@ const drawFromVideo = (ctx, video) => {
         rgb[channel_size * 1 + j] = imageData.data[j * 4 + 1] / 255.0;
         rgb[channel_size * 2 + j] = imageData.data[j * 4 + 2] / 255.0;
     }
-    console.log(rgb);
+    //console.log(rgb);
     return rgb;
 }
 

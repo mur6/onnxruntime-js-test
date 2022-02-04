@@ -24,7 +24,7 @@ const load_input_data = (batch_imgs) => {
         template_vertices_sub:from_3dim_to_tensor(vertices, [1, 195, 3]),
         batch_imgs: batch_imgs
     };
-    console.log(ret);
+    //console.log(ret);
     return ret;
 }
 
@@ -35,11 +35,15 @@ async function get_session() {
 // use an async context to call onnxruntime functions.
 async function run(session, input_data) {
     try {
+        const t0 = performance.now();
+        console.log("Start prediction:");
         const results = await session.run(input_data);
         const pred_camera = results.pred_camera;
         const pred_vertices = results.pred_vertices;
         //console.log(pred_camera);
         //console.log(pred_vertices);
+        const t1 = performance.now();
+        console.log(`End prediction: ${t1 - t0} milliseconds.`);
         return [pred_camera, pred_vertices];
     } catch (e) {
         document.write(`failed to inference ONNX model: ${e}.`);
