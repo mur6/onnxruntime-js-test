@@ -1,4 +1,4 @@
-import {initAll, drawFromVideo} from './video.js';
+import {initAll, drawFromVideo, contextToRgbArray} from './video.js';
 import * as model from './model.js';
 import * as renderer from './renderer.js';
 import * as THREE from 'three';
@@ -28,6 +28,13 @@ async function main() {
     let batch_imgs = null;
     const session = await model.get_session();
     console.log(`session loaded: ${session}`);
+    (async () => {
+        batch_imgs = model.to_tensor(contextToRgbArray(ctx), [3, 224, 224]);
+        const input = model.load_input_data(batch_imgs);
+        const [pred_camera, pred_vertices] = await model.run(session, input);
+        console.log(pred_camera);
+        update(pred_vertices);
+    })();
     copy_to_video_button.addEventListener('click', function () {
         (async () => {
             if (canvas.width > 0 && canvas.height > 0) {

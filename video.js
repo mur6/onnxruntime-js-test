@@ -15,7 +15,8 @@ async function getMediaAndSetStream(video) {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         video.srcObject = stream
     } catch (err) {
-        document.write(`failed to use getUserMedia: ${err}.`);
+        // document.write(`failed to use getUserMedia: ${err}.`);
+        console.log(err);
     }
 }
 
@@ -29,9 +30,11 @@ const drawFromVideo = (ctx, video) => {
     //console.log(marginX, marginY);
 
     ctx.drawImage(video, marginX, marginY, width, height, 0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
-    const imageData = ctx.getImageData(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
-    //console.log(imageData);
-    //const rgb = Array.from({length: 10}, (_, _) => {3});
+    return contextToRgbArray(ctx);
+}
+
+const contextToRgbArray = (context) => {
+    const imageData = context.getImageData(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
     const channel_size = 224 * 224;
     const rgb = new Float32Array(channel_size * 3);
     for (let j = 0; j < (imageData.data.length / 4); j++) {
@@ -39,7 +42,6 @@ const drawFromVideo = (ctx, video) => {
         rgb[channel_size * 1 + j] = imageData.data[j * 4 + 1] / 255.0;
         rgb[channel_size * 2 + j] = imageData.data[j * 4 + 2] / 255.0;
     }
-    //console.log(rgb);
     return rgb;
 }
 
@@ -47,6 +49,12 @@ function initAll() {
     const canvas = document.createElement('canvas');
     canvas.width = CANVAS_SIZE.width;
     canvas.height = CANVAS_SIZE.height;
+    const context = canvas.getContext('2d');
+    const initial_image = new Image();
+    initial_image.src = "./images/right_hand.png";
+    initial_image.onload = () => {
+        context.drawImage(initial_image, 0, 0, 448, 448, 0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
+    };
 
     const video = document.createElement('video');
     video.autoplay = true;
@@ -63,4 +71,4 @@ function initAll() {
     return [canvas, video];
 }
 
-export { drawFromVideo, initAll };
+export { drawFromVideo, initAll, contextToRgbArray};
