@@ -1,11 +1,19 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {OBJExporter} from "three/examples/jsm/exporters/OBJExporter";
 
 import faces_data from './faces.json';
 
 const get_faces = () => {
     return Uint16Array.from(faces_data.flat());
+}
+
+const mesh_save = (scene) => {
+    const exporter = new OBJExporter();
+    const objData = exporter.parse(scene);
+    const blob = new Blob([objData], {"type": "application/x-msdownload"});
+    return blob
 }
 
 const make_geometry_and_mesh = () => {
@@ -46,4 +54,4 @@ const initScene = (element) => {
     return [scene, camera];
 }
 
-export { get_faces, make_geometry_and_mesh, initScene };
+export { get_faces, mesh_save, make_geometry_and_mesh, initScene };

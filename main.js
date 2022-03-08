@@ -18,6 +18,11 @@ async function main() {
         geometry.setIndex(new THREE.BufferAttribute(uint16faces, 1));
         geometry.attributes.position.needsUpdate = true;
         scene.add(mesh);
+        const blob = renderer.mesh_save(scene);
+        const elm = document.createElement("a");
+        elm.href = window.URL.createObjectURL(blob);
+        elm.innerHTML = "dl";
+        document.body.appendChild(elm);
         console.log(camera.position);
     }
     let batch_imgs = null;
