@@ -39,7 +39,7 @@ async function main() {
         const [pred_vertices, pred_3d_joints] = await model.run(session, input);
         console.log(pred_vertices.data);//778,3
         const make_mesh_from_vertex = py.globals.get('make_mesh_from_vertex');
-        make_mesh_from_vertex(pred_vertices.data, uint16faces)
+        make_mesh_from_vertex(pred_vertices.data, uint16faces, pred_3d_joints.data)
         
         const load_as_faces = py.globals.get('load_as_faces');
         load_as_faces(uint16faces)
