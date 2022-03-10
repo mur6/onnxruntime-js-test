@@ -1,6 +1,7 @@
 import {initAll, drawFromVideo, contextToRgbArray} from './src/video.js';
 import * as model from './src/model.js';
 import * as renderer from './src/renderer.js';
+import * as pyodide from './src/pyodide.js';
 import * as THREE from 'three';
 
 async function main() {
@@ -11,6 +12,7 @@ async function main() {
     const [scene, camera] = renderer.initScene(document.getElementById("threejs"));
     const [geometry, mesh] = renderer.make_geometry_and_mesh();
     const uint16faces = renderer.get_faces();
+    const py = await pyodide.init_pyodide();
 
     const update = (pred_vertices) => {
         const v = pred_vertices.data;
@@ -31,6 +33,9 @@ async function main() {
     (async () => {
         batch_imgs = model.to_tensor(contextToRgbArray(ctx), [3, 224, 224]);
         const input = model.load_input_data(batch_imgs);
+        const r = pyodide.make_ones(py, 5, 2);
+        console.log(r);
+
         const [pred_vertices, pred_3d_joints] = await model.run(session, input);
         update(pred_vertices);
     })();
