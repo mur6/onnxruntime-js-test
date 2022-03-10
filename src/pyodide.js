@@ -26,4 +26,8 @@ async function init_pyodide() {
     return pyodide;
 }
 
+const make_mesh = (pyodide, js_array) => {
+
+}
+
 export { make_ones, make_eye, init_pyodide };

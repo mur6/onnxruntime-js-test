@@ -37,6 +37,15 @@ async function main() {
         console.log(r);
 
         const [pred_vertices, pred_3d_joints] = await model.run(session, input);
+        console.log(pred_vertices.data);//778,3
+        const make_mesh_from_vertex = py.globals.get('make_mesh_from_vertex');
+        make_mesh_from_vertex(pred_vertices.data, uint16faces)
+        
+        const load_as_faces = py.globals.get('load_as_faces');
+        load_as_faces(uint16faces)
+        //return func(js_array).toJs();
+        console.log(pred_3d_joints.data);//21, 3
+
         update(pred_vertices);
     })();
     copy_to_video_button.addEventListener('click', function () {
