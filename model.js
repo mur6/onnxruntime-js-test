@@ -29,7 +29,7 @@ const load_input_data = (batch_imgs) => {
 }
 
 async function get_session() {
-    return ort.InferenceSession.create('./gm3.onnx');
+    return ort.InferenceSession.create('./model/gm3.onnx');
 }
 
 // use an async context to call onnxruntime functions.

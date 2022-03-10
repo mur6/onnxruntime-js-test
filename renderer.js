@@ -37,6 +37,7 @@ const initScene = (element) => {
     const camera = new THREE.PerspectiveCamera(70, 1, 0.01, 100);
     // カメラの初期座標を設定
     camera.position.set(0.021, -0.116, -0.458);
+    camera.up.set(0, -1, 0);
 
     const controls = new OrbitControls(camera, element);
 
