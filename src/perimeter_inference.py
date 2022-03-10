@@ -34,6 +34,7 @@ JOINT_NAMES = [
 ]
 
 def load_ring(joint_list):
+    print(f"joint_list: {joint_list}")
     #j = np.load("data/joint.npy", allow_pickle=True)
     joint_dict = dict(zip(JOINT_NAMES, joint_list))
     ring1 = joint_dict["ring1"]
@@ -104,13 +105,12 @@ def make_mesh_from_vertex(jsarray_vertex, jsarray_faces, jsarray_joints):
     joints_np = np.array(jsarray_joints.to_py()).reshape(-1, 3)
     ring1, ring2, ring3, ring_tip = load_ring(joints_np)
     finger_length = calc_finger_length(ring1, ring2, ring3, ring_tip)
-    print(finger_length)
-    print(f"ring1: {ring1}")
-    print(f"ring2: {ring2}")
+    print(f"finger_length: {finger_length}")
+    # print(f"ring1: {ring1}")
+    # print(f"ring2: {ring2}")
 
     vertex_np = np.array(jsarray_vertex.to_py()).reshape(778, 3)
     faces_np = np.array(jsarray_faces.to_py(), dtype='int').reshape(-1, 3)
-
 
     hand_mesh = trimesh.Trimesh(vertices=vertex_np, faces=faces_np)
     #hand_mesh = trimesh.Trimesh(**hand_mesh_params)
@@ -118,10 +118,9 @@ def make_mesh_from_vertex(jsarray_vertex, jsarray_faces, jsarray_joints):
         hand_mesh=hand_mesh, ring1_point=ring1, ring2_point=ring2
     )
     perimeter, center_points = calc_ring_perimeter(ring_contact_part_mesh)
-    print(perimeter)
+    print(f"perimeter: {perimeter}")
     print(f"Ratio: {perimeter / finger_length}")
-
-    print(hand_mesh)
+    #print(hand_mesh)
 
 # def load_as_faces(jsarray):
 #     py_list = jsarray.to_py()
