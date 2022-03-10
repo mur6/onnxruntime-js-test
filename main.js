@@ -1,6 +1,6 @@
-import {initAll, drawFromVideo, contextToRgbArray} from './video.js';
-import * as model from './model.js';
-import * as renderer from './renderer.js';
+import {initAll, drawFromVideo, contextToRgbArray} from './src/video.js';
+import * as model from './src/model.js';
+import * as renderer from './src/renderer.js';
 import * as THREE from 'three';
 
 async function main() {
