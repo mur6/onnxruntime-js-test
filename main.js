@@ -31,8 +31,7 @@ async function main() {
     (async () => {
         batch_imgs = model.to_tensor(contextToRgbArray(ctx), [3, 224, 224]);
         const input = model.load_input_data(batch_imgs);
-        const [pred_camera, pred_vertices] = await model.run(session, input);
-        console.log(pred_camera);
+        const [pred_vertices, pred_3d_joints] = await model.run(session, input);
         update(pred_vertices);
     })();
     copy_to_video_button.addEventListener('click', function () {
@@ -47,7 +46,7 @@ async function main() {
     predict_hand_button.addEventListener('click', function () {
         (async () => {
                 const input = model.load_input_data(batch_imgs);
-                const [pred_camera, pred_vertices] = await model.run(session, input);
+                const [pred_vertices, pred_3d_joints] = await model.run(session, input);
                 update(pred_vertices);
         })();
     }, false);

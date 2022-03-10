@@ -40,11 +40,10 @@ async function run(session, input_data) {
         const results = await session.run(input_data);
         const pred_camera = results.pred_camera;
         const pred_vertices = results.pred_vertices;
-        //console.log(pred_camera);
-        //console.log(pred_vertices);
+        const pred_3d_joints = results.pred_3d_joints;
         const t1 = performance.now();
         console.log(`End prediction: ${t1 - t0} milliseconds.`);
-        return [pred_camera, pred_vertices];
+        return [pred_vertices, pred_3d_joints];
     } catch (e) {
         document.write(`failed to inference ONNX model: ${e}.`);
         console.log(e);
