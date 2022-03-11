@@ -33,16 +33,32 @@ async function main() {
     (async () => {
         batch_imgs = model.to_tensor(contextToRgbArray(ctx), [3, 224, 224]);
         const input = model.load_input_data(batch_imgs);
-        const r = pyodide.make_ones(py, 5, 2);
+        //const r = pyodide.make_ones(py, 5, 2);
+        const get_tuple = py.globals.get('get_tuple');
+        const [a, b]  = get_tuple(3);
+        console.log(a.toJs());
+        console.log(b.toJs());
         const [pred_vertices, pred_3d_joints] = await model.run(session, input);
         const make_mesh_from_vertex = py.globals.get('make_mesh_from_vertex');
-        make_mesh_from_vertex(pred_vertices.data, uint16faces, pred_3d_joints.data)
-
-        const load_as_faces = py.globals.get('load_as_faces');
-        load_as_faces(uint16faces)
+        const [ring1_py, ring2_py] = make_mesh_from_vertex(pred_vertices.data, uint16faces, pred_3d_joints.data)
+        const ring1 = ring1_py.toJs();
+        const ring2 = ring2_py.toJs();
+        //const load_as_faces = py.globals.get('load_as_faces');
+        //load_as_faces(uint16faces)
         //return func(js_array).toJs();
-        console.log(pred_3d_joints.data);//21, 3
-
+        console.log(`ring1: ${ring1}`);
+        let geometry = new THREE.SphereGeometry( 0.002, 16, 16 );
+        geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(ring1[0], ring1[1], ring1[2]) );
+        let material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe : true } );
+        let sphere = new THREE.Mesh( geometry, material );
+        scene.add( sphere );
+        //
+        geometry = new THREE.SphereGeometry( 0.002, 16, 16 );
+        geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(ring2[0], ring2[1], ring2[2]) );
+        material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe : true } );
+        sphere = new THREE.Mesh( geometry, material );
+        scene.add( sphere );
+        //
         update(pred_vertices);
     })();
     copy_to_video_button.addEventListener('click', function () {

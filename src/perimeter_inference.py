@@ -9,6 +9,13 @@ def make_ones(jsarray):
 
 def make_eye(num):
     return np.eye(num)
+
+def get_tuple(num):
+    a = np.arange(num, dtype=np.float32)
+    b = np.arange(num, dtype=np.float32)
+    return a, b
+
+
 JOINT_NAMES = [
     "wrist",
     "index1",
@@ -34,13 +41,13 @@ JOINT_NAMES = [
 ]
 
 def load_ring(joint_list):
-    print(f"joint_list: {joint_list}")
+    #print(f"joint_list: {joint_list}")
     #j = np.load("data/joint.npy", allow_pickle=True)
-    joint_dict = dict(zip(JOINT_NAMES, joint_list))
-    ring1 = joint_dict["ring1"]
-    ring2 = joint_dict["ring2"]
-    ring3 = joint_dict["ring3"]
-    ring_tip = joint_dict["ring_tip"]
+    #joint_dict = dict(zip(JOINT_NAMES, joint_list))
+    ring1 = joint_list[13]# joint_dict["ring1"]
+    ring2 = joint_list[14]#["ring2"]
+    ring3 = joint_list[15]#["ring3"]
+    ring_tip = joint_list[16]# joint_dict["ring_tip"]
     return ring1, ring2, ring3, ring_tip
 
 def calc_finger_length(ring1, ring2, ring3, ring_tip):
@@ -120,7 +127,7 @@ def make_mesh_from_vertex(jsarray_vertex, jsarray_faces, jsarray_joints):
     perimeter, center_points = calc_ring_perimeter(ring_contact_part_mesh)
     print(f"perimeter: {perimeter}")
     print(f"Ratio: {perimeter / finger_length}")
-    #print(hand_mesh)
+    return ring1, ring2
 
 # def load_as_faces(jsarray):
 #     py_list = jsarray.to_py()

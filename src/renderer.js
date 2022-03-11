@@ -18,9 +18,6 @@ const mesh_save = (scene) => {
 
 const make_geometry_and_mesh = () => {
     const geometry = new THREE.BufferGeometry();
-
-    //const uint16faces = Uint16Array.from(faces_data);
-    //
     const material = new THREE.MeshBasicMaterial( { color: 0x3366cc, wireframe : true} );
     const mesh = new THREE.Mesh(geometry, material);
     return [geometry, mesh];
