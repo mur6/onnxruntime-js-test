@@ -23,7 +23,14 @@ async function main() {
     const uint16faces = renderer.get_faces();
     const py = await pyodide.init_pyodide();
 
-    const update = (pred_vertices) => {
+    const update = (pred_vertices, pred_3d_joints) => {
+        const make_mesh_from_vertex = py.globals.get('make_mesh_from_vertex');
+        const [ring1, ring2] = make_mesh_from_vertex(pred_vertices.data, uint16faces, pred_3d_joints.data)
+        console.log(`ring1: ${ring1}`);
+        scene.add( make_sphere(ring1) );
+        scene.add( make_sphere(ring2) );
+        // ########################################
+
         const v = pred_vertices.data;
         geometry.setAttribute('position', new THREE.BufferAttribute(v, 3));
         geometry.setIndex(new THREE.BufferAttribute(uint16faces, 1));
@@ -42,23 +49,8 @@ async function main() {
     (async () => {
         batch_imgs = model.to_tensor(contextToRgbArray(ctx), [3, 224, 224]);
         const input = model.load_input_data(batch_imgs);
-        //const r = pyodide.make_ones(py, 5, 2);
-        const get_tuple = py.globals.get('get_tuple');
-        const [a, b]  = get_tuple(3);
-        console.log(a);
-        console.log(b);
         const [pred_vertices, pred_3d_joints] = await model.run(session, input);
-        const make_mesh_from_vertex = py.globals.get('make_mesh_from_vertex');
-        const [ring1, ring2] = make_mesh_from_vertex(pred_vertices.data, uint16faces, pred_3d_joints.data)
-        //const load_as_faces = py.globals.get('load_as_faces');
-        //load_as_faces(uint16faces)
-        //return func(js_array).toJs();
-        console.log(`ring1: ${ring1}`);
-        //
-        scene.add( make_sphere(ring1) );
-        scene.add( make_sphere(ring2) );
-
-        update(pred_vertices);
+        update(pred_vertices, pred_3d_joints);
     })();
     copy_to_video_button.addEventListener('click', function () {
         (async () => {
@@ -73,7 +65,7 @@ async function main() {
         (async () => {
                 const input = model.load_input_data(batch_imgs);
                 const [pred_vertices, pred_3d_joints] = await model.run(session, input);
-                update(pred_vertices);
+                update(pred_vertices, pred_3d_joints);
         })();
     }, false);
 }
