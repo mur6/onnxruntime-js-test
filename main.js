@@ -49,9 +49,7 @@ async function main() {
         console.log(b);
         const [pred_vertices, pred_3d_joints] = await model.run(session, input);
         const make_mesh_from_vertex = py.globals.get('make_mesh_from_vertex');
-        const [ring1_py, ring2_py] = make_mesh_from_vertex(pred_vertices.data, uint16faces, pred_3d_joints.data)
-        const ring1 = ring1_py.toJs();
-        const ring2 = ring2_py.toJs();
+        const [ring1, ring2] = make_mesh_from_vertex(pred_vertices.data, uint16faces, pred_3d_joints.data)
         //const load_as_faces = py.globals.get('load_as_faces');
         //load_as_faces(uint16faces)
         //return func(js_array).toJs();

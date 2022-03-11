@@ -128,7 +128,7 @@ def make_mesh_from_vertex(jsarray_vertex, jsarray_faces, jsarray_joints):
     perimeter, center_points = calc_ring_perimeter(ring_contact_part_mesh)
     print(f"perimeter: {perimeter}")
     print(f"Ratio: {perimeter / finger_length}")
-    return ring1, ring2
+    return to_js(ring1), to_js(ring2)
 
 # def load_as_faces(jsarray):
 #     py_list = jsarray.to_py()
