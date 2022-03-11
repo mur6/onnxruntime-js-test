@@ -4,6 +4,15 @@ import * as renderer from './src/renderer.js';
 import * as pyodide from './src/pyodide.js';
 import * as THREE from 'three';
 
+
+function make_sphere(center) {
+    const geometry = new THREE.SphereGeometry( 0.002, 16, 16 );
+    geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(center[0], center[1], center[2]) );
+    const material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe : true } );
+    const sphere = new THREE.Mesh( geometry, material );
+    return sphere;
+}
+
 async function main() {
     const [canvas, video] = initAll();
     const ctx = canvas.getContext('2d');
@@ -36,8 +45,8 @@ async function main() {
         //const r = pyodide.make_ones(py, 5, 2);
         const get_tuple = py.globals.get('get_tuple');
         const [a, b]  = get_tuple(3);
-        console.log(a.toJs());
-        console.log(b.toJs());
+        console.log(a);
+        console.log(b);
         const [pred_vertices, pred_3d_joints] = await model.run(session, input);
         const make_mesh_from_vertex = py.globals.get('make_mesh_from_vertex');
         const [ring1_py, ring2_py] = make_mesh_from_vertex(pred_vertices.data, uint16faces, pred_3d_joints.data)
@@ -47,18 +56,10 @@ async function main() {
         //load_as_faces(uint16faces)
         //return func(js_array).toJs();
         console.log(`ring1: ${ring1}`);
-        let geometry = new THREE.SphereGeometry( 0.002, 16, 16 );
-        geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(ring1[0], ring1[1], ring1[2]) );
-        let material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe : true } );
-        let sphere = new THREE.Mesh( geometry, material );
-        scene.add( sphere );
         //
-        geometry = new THREE.SphereGeometry( 0.002, 16, 16 );
-        geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(ring2[0], ring2[1], ring2[2]) );
-        material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe : true } );
-        sphere = new THREE.Mesh( geometry, material );
-        scene.add( sphere );
-        //
+        scene.add( make_sphere(ring1) );
+        scene.add( make_sphere(ring2) );
+
         update(pred_vertices);
     })();
     copy_to_video_button.addEventListener('click', function () {

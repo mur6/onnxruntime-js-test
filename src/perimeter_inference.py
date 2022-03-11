@@ -2,6 +2,7 @@ import trimesh
 import trimesh.exchange
 
 import numpy as np
+from pyodide import to_js
 
 def make_ones(jsarray):
     ary = jsarray.to_py()
@@ -13,7 +14,7 @@ def make_eye(num):
 def get_tuple(num):
     a = np.arange(num, dtype=np.float32)
     b = np.arange(num, dtype=np.float32)
-    return a, b
+    return to_js(a), to_js(b)
 
 
 JOINT_NAMES = [
